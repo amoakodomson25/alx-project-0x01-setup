@@ -4,7 +4,7 @@ export interface PostProps {
    title: string;
    body: string;
 }
-export interface UserCardProps {
+export interface UserProps {
    user: {
      id: number;
      name: string;
