@@ -1,10 +1,15 @@
 import PostCard from "@/components/common/PostCard";
 import PostModal from "@/components/common/PostModal";
 import Header from "@/components/layout/Header";
-import { PostData, PostProps } from "@/interfaces";
+import { PostProps } from "@/interfaces";
+import { PostData } from "@/interfaces";
 import { useState } from "react";
 
-const Posts: React.FC<PostProps[]> = ({ posts }) => {
+interface PostsPageProps {
+  posts: PostProps[];
+}
+
+const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [post, setPost] = useState<PostData | null>(null);
 
@@ -15,9 +20,11 @@ const Posts: React.FC<PostProps[]> = ({ posts }) => {
   return (
     <div className="flex flex-col h-screen">
       <Header />
+
       <main className="p-4">
         <div className="flex justify-between">
-          <h1 className=" text-2xl font-semibold">Post Content</h1>
+          <h1 className="text-2xl font-semibold">Post Content</h1>
+
           <button
             onClick={() => setModalOpen(true)}
             className="bg-blue-700 px-4 py-2 rounded-full text-white"
@@ -25,14 +32,15 @@ const Posts: React.FC<PostProps[]> = ({ posts }) => {
             Add Post
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-2 ">
-          {posts?.map(({ title, body, userId, id }: PostProps, key: number) => (
+
+        <div className="grid grid-cols-3 gap-2">
+          {posts.map(({ id, title, body, userId }) => (
             <PostCard
+              key={id}
+              id={id}
               title={title}
               body={body}
               userId={userId}
-              id={id}
-              key={key}
             />
           ))}
         </div>
@@ -53,9 +61,7 @@ export async function getStaticProps() {
   const posts = await response.json();
 
   return {
-    props: {
-      posts,
-    },
+    props: { posts },
   };
 }
 
